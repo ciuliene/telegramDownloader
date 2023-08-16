@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "coverage run -m unittest discover -s ./tests -v && coverage lcov -o lcov.info && coverage report"
+    "test": "coverage run --omit 'tests/*' -m unittest discover -s ./tests -v && coverage lcov -o lcov.info && coverage report"
   },
   "keywords": [],
   "author": "",
