@@ -16,7 +16,18 @@ class Mock_Chats():
 
 class Mock_Chat():
     def __init__(self, id: 0) -> None:
-        self.update = {'title': f'Chat {id}', 'id': str(id)}
+        self.update = {'title': f'Chat {id}', 'id': str(id), 'last_message': {'id': str(id)}}
+        pass
+
+    def wait(self):
+        pass
+
+class Mock_History():
+    def __init__(self, len: int = 0) -> None:
+        messages = []
+        for i in range(len):
+            messages.append({'id': str(i)})
+        self.update = {'messages': messages}
         pass
 
     def wait(self):
@@ -83,3 +94,29 @@ class Test_TGDownloader(TestCase):
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 1)
         self.assertEqual('Chat 0 (0)', str(result[0]))
+
+    @patch.object(Telegram, 'get_chat_history')
+    def test_getting_chat_history_returns_empty_list(self, mock_history):
+        # Arrange
+        tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
+        mock_history.return_value = Mock_History()
+
+        # Act
+        result = tgd.get_chat_history(0)
+
+        # Assert
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 0)
+
+    @patch.object(Telegram, 'get_chat_history')
+    def test_getting_chat_history_returns_one_message(self, mock_history):
+        # Arrange
+        tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
+        mock_history.return_value = Mock_History(1)
+
+        # Act
+        result = tgd.get_chat_history(0)
+
+        # Assert
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 1)
