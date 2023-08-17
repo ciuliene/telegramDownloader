@@ -1,4 +1,6 @@
+from typing import Any
 from telegram.client import Telegram
+from src.models.chat import Chat
 
 class TGDownloader():
     def __init__(self, api_id: str, api_hash:str, database_encryption_key:str, phone:str) -> None:
@@ -21,3 +23,21 @@ class TGDownloader():
     
     def stop(self):
         self.tg.stop()
+
+    def get_chats(self) -> list:
+        result = self.tg.get_chats()
+        result.wait()
+        
+        chats = []
+
+        for chat_id in result.update['chat_ids']:
+            result = self.tg.get_chat(chat_id)
+            result.wait()
+            chat = result.update
+            chats.append(Chat(title=chat['title'], id=chat['id']))
+
+        return chats
+
+    def __call__(self, *args: Any, **kwds: Any) -> Telegram:
+        return self.tg
+        
