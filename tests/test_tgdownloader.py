@@ -23,10 +23,10 @@ class Mock_Chat():
         pass
 
 class Mock_History():
-    def __init__(self, len: int = 0) -> None:
+    def __init__(self, len: int = 0, msg_type: str = 'video') -> None:
         messages = []
         for i in range(len):
-            messages.append({'id': str(i)})
+            messages.append({'id': str(i), 'content': {msg_type: {'file_name': f'video_{i}.mp4', msg_type:{'id':i, 'size':i}  }}})
         self.update = {'messages': messages}
         pass
 
@@ -67,18 +67,6 @@ class Test_TGDownloader(TestCase):
         # Assert
         mock_stop.assert_called_once()
 
-    @patch.object(Telegram, 'get_chats')
-    def test_getting_chats_returns_empty_chat_list(self, *_):
-        # Arrange
-        tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
-
-        # Act
-        result = tgd.get_chats()
-
-        # Assert
-        self.assertIsInstance(result, list)
-        self.assertEqual(len(result), 0)
-
     @patch.object(Telegram, 'get_chat')
     @patch.object(Telegram, 'get_chats')
     def test_getting_chats_returns_empty_chat_list(self, mock_chats, mock_chat):
@@ -96,27 +84,41 @@ class Test_TGDownloader(TestCase):
         self.assertEqual('Chat 0 (0)', str(result[0]))
 
     @patch.object(Telegram, 'get_chat_history')
-    def test_getting_chat_history_returns_empty_list(self, mock_history):
+    def test_getting_files_returns_empty_list(self, mock_history):
         # Arrange
         tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
         mock_history.return_value = Mock_History()
 
         # Act
-        result = tgd.get_chat_history(0)
+        result = tgd.get_files_from_chat(0)
 
         # Assert
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 0)
 
     @patch.object(Telegram, 'get_chat_history')
-    def test_getting_chat_history_returns_one_message(self, mock_history):
+    def test_getting_files_returns_one_message(self, mock_history):
         # Arrange
         tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
         mock_history.return_value = Mock_History(1)
 
         # Act
-        result = tgd.get_chat_history(0)
+        result = tgd.get_files_from_chat(0)
 
         # Assert
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 1)
+        self.assertEqual('video_0.mp4', str(result[0]))
+
+    @patch.object(Telegram, 'get_chat_history')
+    def test_getting_files_returns_empty_list_when_message_is_not_video_type(self, mock_history):
+        # Arrange
+        tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
+        mock_history.return_value = Mock_History(1, 'image')
+
+        # Act
+        result = tgd.get_files_from_chat(0)
+
+        # Assert
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 0)
