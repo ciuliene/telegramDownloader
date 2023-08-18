@@ -1,6 +1,7 @@
 import sys
 import termios
 import tty
+from src.utils import go_forward_n_lines, go_back_n_lines
 
 class Menu:
     def __init__(self, options: list[str]) -> None:
@@ -9,7 +10,7 @@ class Menu:
         pass
 
     def start_menu(self):
-        self._create_space()
+        go_forward_n_lines(len(self.options))
         selection = None
         while selection is None:
             self._print_menu()
@@ -30,9 +31,6 @@ class Menu:
             
         return choice
 
-    def _create_space(self):
-        sys.stdout.write("\n".join(self.options + [""]))
-
     def _get_longest(self):
         longest = 0
         for option in self.options:
@@ -41,8 +39,7 @@ class Menu:
         return longest
 
     def _print_menu(self, padding = 2):
-        for _ in self.options:
-            sys.stdout.write("\033[F")
+        go_back_n_lines(len(self.options))
 
         longest = self._get_longest()
         pad = ' ' * padding

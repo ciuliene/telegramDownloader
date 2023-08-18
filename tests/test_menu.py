@@ -31,8 +31,8 @@ class TestMenu(TestCase):
         # Assert
         self.assertEqual(selection, options[0])
         self.assertEqual(index, 0)
-        self.assertEqual(mock_write.call_count, (((len(options)*2) * (len(commands)+1)) + 1)) # Plus 1 for the _create_space() call
-
+        self.assertEqual(mock_write.call_count, 1 + (len(options) + 1) * (len(commands) + 1))
+        
     @patch("sys.stdout.write")
     @patch("sys.stdin.read")
     def test_getting_menu_selection_returns_second_choice(self, mock_read, mock_write, *_):
@@ -48,7 +48,7 @@ class TestMenu(TestCase):
         # Assert
         self.assertEqual(selection, options[1])
         self.assertEqual(index, 1)
-        self.assertEqual(mock_write.call_count,(((len(options)*2) * (len(commands)+1)) + 1)) # Plus 1 for the _create_space() call
+        self.assertEqual(mock_write.call_count, 1 + (len(options) + 1) * (len(commands) + 1))
 
 
     @patch("sys.stdout.write")
@@ -66,7 +66,7 @@ class TestMenu(TestCase):
         # Assert
         self.assertEqual(selection, options[0])
         self.assertEqual(index, 0)
-        self.assertEqual(mock_write.call_count, (((len(options)*2) * (len(commands)+1)) + 1)) # Plus 1 for the _create_space() call
+        self.assertEqual(mock_write.call_count, 1 + (len(options) + 1) * (len(commands) + 1))
 
     @patch("sys.stdout.write")
     @patch("sys.stdin.read")
