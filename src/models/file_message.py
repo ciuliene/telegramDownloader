@@ -9,6 +9,7 @@ class FileMessage():
         self.downloaded_size = 0
         self.is_downloaded = False
         self.file_path = None
+        self.download_percentage = 0
         pass
 
     def download(self) -> tuple[bool, int, str]:
@@ -18,6 +19,8 @@ class FileMessage():
         if self.downloaded_size == self.file_size:
             self.is_downloaded = True
             self.file_path = result.update['local']['path']
+
+        self.download_percentage = self.downloaded_size / self.file_size * 100
 
         return self.is_downloaded, self.downloaded_size / self.file_size * 100, self.file_path
 
