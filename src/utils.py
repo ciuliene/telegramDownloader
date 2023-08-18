@@ -1,5 +1,13 @@
 import sys
 
+def go_back_n_lines(n: int):
+    sys.stdout.write("\033[F".join(["" for _ in range(n)] + [""]))
+    sys.stdout.flush()
+
+def go_forward_n_lines(n: int):
+    sys.stdout.write("\033[E".join(["" for _ in range(n)] + [""]))
+    sys.stdout.flush()
+
 def print_progress_bar(file_name: str, percentage: float, name_size: int, bar_length: int = 60):
     if not (0 <= percentage <= 100):
         raise ValueError("Percentage must be between 0 and 100")

@@ -16,6 +16,54 @@ class TestPrintProgressBar(TestCase):
         sys.stdout = self.saved_stdout
         sys.stdout.write("\033[?25h")
 
+    def test_going_back_n_lines_prints_expected_string(self):
+        # Arrange
+        n = 5
+        expected_output = "\033[F".join(["" for _ in range(n)] + [""])
+
+        # Act
+        go_back_n_lines(n)
+        actual_output = self.mock_stdout.getvalue()
+
+        # Assert
+        self.assertEqual(expected_output, actual_output)
+
+    def test_going_back_zero_lines_prints_expected_string(self):
+        # Arrange
+        n = 0
+        expected_output = "\033[F".join(["" for _ in range(n)] + [""])
+
+        # Act
+        go_back_n_lines(n)
+        actual_output = self.mock_stdout.getvalue()
+
+        # Assert
+        self.assertEqual(expected_output, actual_output)
+
+    def test_going_forward_n_lines_prints_expected_string(self):
+        # Arrange
+        n = 5
+        expected_output = "\033[E".join(["" for _ in range(n)] + [""])
+
+        # Act
+        go_forward_n_lines(n)
+        actual_output = self.mock_stdout.getvalue()
+
+        # Assert
+        self.assertEqual(expected_output, actual_output)
+    
+    def test_going_forward_zero_lines_prints_expected_string(self):
+        # Arrange
+        n = 0
+        expected_output = "\033[E".join(["" for _ in range(n)] + [""])
+
+        # Act
+        go_forward_n_lines(n)
+        actual_output = self.mock_stdout.getvalue()
+
+        # Assert
+        self.assertEqual(expected_output, actual_output)
+
     def test_creating_progress_bar_prints_expected_string(self):
         # Arrange
         file_name = "example_file.txt"
