@@ -31,8 +31,7 @@ class Menu:
         return choice
 
     def _create_space(self):
-        for _ in self.options:
-            print()
+        sys.stdout.write("\n".join(self.options + [""]))
 
     def _get_longest(self):
         longest = 0
