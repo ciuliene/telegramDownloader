@@ -2,20 +2,25 @@ from typing import Any
 from telegram.client import Telegram
 from src.models.chat import Chat
 from src.models.file_message import FileMessage
+import os
 
 class TGDownloader():
-    def __init__(self, api_id: str, api_hash:str, database_encryption_key:str, phone:str) -> None:
+    def __init__(self, api_id: str, api_hash:str, database_encryption_key:str, phone:str, files_directory: str = None) -> None:
         self.api_id = api_id
         self.api_hash = api_hash
         self.database_encryption_key = database_encryption_key
         self.phone = phone
+
+        if files_directory is not None:
+            self._check_directory(files_directory)
 
         self.tg = Telegram(
             api_id=api_id,
             api_hash=api_hash,
             phone=phone,
             database_encryption_key=database_encryption_key,
-            files_directory=f'./files/{phone}'
+            files_directory=files_directory,
+            tdlib_verbosity=0
         )
         pass
 
@@ -59,10 +64,14 @@ class TGDownloader():
             video_list.append(FileMessage(
                 file_name=video['file_name'], 
                 file_id=video[field]['id'], 
-                file_size=video[field]['size']))
+                file_size=video[field]['size'], 
+                telegram=self.tg))
 
         return video_list
 
     def __call__(self, *args: Any, **kwds: Any) -> Telegram:
         return self.tg
     
+    def _check_directory(self, directory: str):
+        if not os.path.exists(directory):
+            os.makedirs(directory)

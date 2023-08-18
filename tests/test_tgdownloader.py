@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
-from src.tgdownloader import TGDownloader
 from telegram.client import Telegram, AuthorizationState
+from src.tgdownloader import TGDownloader
 
 class Mock_Chats():
     def __init__(self, len = 0) -> None:
@@ -66,6 +66,15 @@ class Test_TGDownloader(TestCase):
 
         # Assert
         mock_stop.assert_called_once()
+
+    @patch.object(Telegram, 'stop', return_value=None)
+    @patch('os.makedirs')
+    def test_creating_directory_succeeds(self, mock_makedirs, _):
+        # Arrange
+        TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER", "test_directory")
+
+        # Assert
+        mock_makedirs.assert_called_once()
 
     @patch.object(Telegram, 'get_chat')
     @patch.object(Telegram, 'get_chats')
