@@ -27,7 +27,15 @@ FILES_DIRECTORY=<files_directory> # Optional. Where you want to save the files
 <span style="color:orange;">IMPORTANT</span>
 For your security, **do not share or upload this file**.
 
-Then you can run the application with:
+NOTE: it is recommended to use the application in a virtual environment.
+
+Then you can install the required packages with:
+
+```sh
+pip install -r requirements.txt
+```
+
+And run the application with:
 
 ```sh
 python main.py
