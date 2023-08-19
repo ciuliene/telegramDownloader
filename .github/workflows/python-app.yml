@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-test:
 
     runs-on: ubuntu-latest
 
@@ -31,3 +31,8 @@ jobs:
     - name: Test
       run: |
         coverage run --omit 'tests/*,*__init__.py' -m unittest discover -s ./tests -v && coverage lcov -o lcov.info && coverage report
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
