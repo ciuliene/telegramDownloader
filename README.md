@@ -1,5 +1,7 @@
 # TelegramDownloader
 
+[![Test](https://github.com/ciuliene/telegramDownloader/actions/workflows/python-app.yml/badge.svg)](https://github.com/ciuliene/telegramDownloader/actions/workflows/python-app.yml) [![codecov](https://codecov.io/gh/ciuliene/telegramDownloader/graph/badge.svg?token=02ZM98MDDM)](https://codecov.io/gh/ciuliene/telegramDownloader)
+
 A python application to download video files from Telegram channel
 
 ## Requirements
