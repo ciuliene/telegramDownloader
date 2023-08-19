@@ -13,13 +13,14 @@ def create_tgd() -> TGDownloader:
     api_hash = env.get_env_var('API_HASH')
     database_encryption_key = env.get_env_var('DATABASE_ENCRYPTION_KEY')
     phone = env.get_env_var('PHONE')
+    files_directory = env.get_env_var('FILES_DIRECTORY') or f"./files/{phone}"
 
     tgd = TGDownloader(
         api_id=api_id, 
         api_hash=api_hash, 
         database_encryption_key=database_encryption_key, 
         phone=phone,
-        files_directory=f'./files/{phone}')
+        files_directory=files_directory)
     
     return tgd
 
