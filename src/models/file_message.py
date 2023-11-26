@@ -1,7 +1,7 @@
 from telegram.client import Telegram
 
 class FileMessage():
-    def __init__(self, file_name: str, file_id: int, file_size: int, telegram: Telegram) -> None:
+    def __init__(self, file_name: str, file_id: int, file_size: int, telegram: Telegram, id: int) -> None:
         self.file_name = file_name
         self.file_id = file_id
         self.file_size = file_size
@@ -10,6 +10,7 @@ class FileMessage():
         self.is_downloaded = False
         self.file_path = None
         self.download_percentage = 0
+        self.id = id
         pass
 
     def download(self) -> tuple[bool, int, str]:

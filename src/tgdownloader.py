@@ -65,7 +65,8 @@ class TGDownloader():
                 file_name=video['file_name'], 
                 file_id=video[field]['id'], 
                 file_size=video[field]['size'], 
-                telegram=self.tg))
+                telegram=self.tg,
+                id=message['id']))
 
         return video_list
 
