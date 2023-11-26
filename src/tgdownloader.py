@@ -2,6 +2,7 @@ from typing import Any
 from telegram.client import Telegram
 from src.models.chat import Chat
 from src.models.file_message import FileMessage
+from typing import List
 import os
 
 class TGDownloader():
@@ -50,7 +51,7 @@ class TGDownloader():
         result.wait()
         return result.update['messages']
 
-    def get_files_from_chat(self, chat_id: int, limit: int = 100, from_message_id: int = 0) -> list[FileMessage]:
+    def _get_latest_n_files_from_chat(self, chat_id: int, limit: int = 100, from_message_id: int = 0) -> list[FileMessage]:
         messages = self._get_chat_history(chat_id, limit=limit, from_message_id=from_message_id)
         video_list = []
 
@@ -69,6 +70,24 @@ class TGDownloader():
                 id=message['id']))
 
         return video_list
+
+    def get_files_from_chat(self, chat: Chat) -> List[FileMessage]:
+        file_list = []
+        last_message_id = chat.last_message_id
+
+        while True:
+            files = self._get_latest_n_files_from_chat(
+                chat.id, from_message_id=last_message_id)
+
+            if len(files) == 0:
+                break
+
+            for file in files:
+                file_list.append(file)
+
+            last_message_id = file_list[-1].id
+
+        return file_list
 
     def __call__(self, *args: Any, **kwds: Any) -> Telegram:
         return self.tg
