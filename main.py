@@ -1,7 +1,6 @@
 from src.envtool import EnvTool
-from src.models.chat import Chat
 from src.tgdownloader import TGDownloader
-from src.utils import print_progress_bar, go_back_n_lines, go_forward_n_lines
+from src.utils import *
 from src.menu import Menu
 import sys
 
@@ -24,23 +23,6 @@ def create_tgd() -> TGDownloader:
     
     return tgd
 
-def download_files_from_chat(tgd: TGDownloader, chat: Chat):
-    files = tgd.get_files_from_chat(chat.id, limit=100, from_message_id=chat.last_message_id)
-
-    longest_file_name = len(max([file.file_name for file in files], key=len))
-
-    go_forward_n_lines(len(files))
-    
-    while len([file for file in files if file.is_downloaded == False]) > 0:
-        go_back_n_lines(len(files))
-
-        for file in files:
-            if not file.is_downloaded:
-                file.download()
-            print_progress_bar(file.file_name, file.download_percentage, longest_file_name)
-
-    print("Download completed!")
-
 def run():
     try:
         tgd = create_tgd()
@@ -57,8 +39,45 @@ def run():
 
         chat = [chat for chat in chat_list if chat.title == selected_chat][0]
 
-        download_files_from_chat(tgd, chat)
-    except KeyboardInterrupt:
+        file_list: list = None
+
+        file_name = f'{selected_chat}.txt'
+
+        files = tgd.get_files_from_chat(chat)
+
+        try:
+            file_list = get_file_list_from_file(file_name)
+            print(f"\nGetting files from {file_name}...")
+        except FileNotFoundError:
+            print("\nGetting files from chat...")
+
+            file_list = [file.file_name for file in files]
+            store_files_file_in_file(file_name, file_list)
+
+            print("\nList of files: ")
+            for file in file_list:
+                print(f'\t- {file}')
+
+            print(f"\nYou can find the list of files here: {file_name}")
+            print("And select which files you want to download")
+
+            return
+        except Exception as e:
+            raise e
+
+        to_download = sorted([file for file in files if file.file_name in file_list],
+                             key=lambda x: file_list.index(x.file_name))
+
+        for file in to_download:
+            while not file.is_downloaded:
+                go_back_n_lines(1)
+                file.download()
+                print_progress_bar(
+                    file.file_name, file.download_percentage, len(file.file_name))
+
+            print("\n")
+
+    except KeyboardInterrupt:  # pragma: no cover
         pass
     except Exception as e:
         sys.stderr.write(f"\033[31m{e}\033[0m")

@@ -48,7 +48,15 @@ Move up and down with the arrow keys and press enter to select the desired chat.
 
 After that each file will be downloaded in the selected folder. The default folder is `./files/{PHONE}` but you can change it in the .env file.
 
-The application will print the name of the file and a progress bar with the percentage of the download. You can stop the download at any time by pressing `CTRL+C`.
+### Step 1: List of available files
+
+Once the chat is selected, the application checks if a file named <chat>.txt exists. This file contains the list of files to downloaded. If the file does not exist, it will be created and the application exits. You can edit this file to change the list of files to download. The order of the files determines the order in which they will be downloaded.
+
+NOTE: the file is created in the same folder as the application.
+
+### Step 2: Downloading files
+
+If the file named <chat>.txt exists, the application will download them one by one. A progress bar will be shown for each file.
 
 ## Disclaimer
 
