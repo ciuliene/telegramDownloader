@@ -41,31 +41,31 @@ def run():
 
         file_list: list = None
 
-        file_name = f'{selected_chat}.txt'
+        chat_name = f'{selected_chat}.txt'
 
-        files = tgd.get_files_from_chat(chat)
+        files_from_chat = tgd.get_files_from_chat(chat)
 
         try:
-            file_list = get_file_list_from_file(file_name)
-            print(f"\nGetting files from {file_name}...")
+            file_list = get_file_list_from_file(chat_name)
+            print(f"\nGetting files from {chat_name}...")
         except FileNotFoundError:
             print("\nGetting files from chat...")
 
-            file_list = [file.file_name for file in files]
-            store_files_file_in_file(file_name, file_list)
+            file_list = [file.file_name for file in files_from_chat]
+            store_files_file_in_file(chat_name, file_list)
 
             print("\nList of files: ")
             for file in file_list:
                 print(f'\t- {file}')
 
-            print(f"\nYou can find the list of files here: {file_name}")
+            print(f"\nYou can find the list of files here: {chat_name}")
             print("And select which files you want to download")
 
             return
         except Exception as e:
             raise e
 
-        to_download = sorted([file for file in files if file.file_name in file_list],
+        to_download = sorted([file for file in files_from_chat if file.file_name in file_list],
                              key=lambda x: file_list.index(x.file_name))
 
         for file in to_download:
