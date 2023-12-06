@@ -2,7 +2,6 @@ from typing import Any
 from telegram.client import Telegram
 from src.models.chat import Chat
 from src.models.file_message import FileMessage
-from typing import List
 import os
 
 class TGDownloader():
@@ -71,7 +70,7 @@ class TGDownloader():
 
         return video_list
 
-    def get_files_from_chat(self, chat: Chat) -> List[FileMessage]:
+    def get_files_from_chat(self, chat: Chat) -> list[FileMessage]:
         file_list = []
         last_message_id = chat.last_message_id
 
@@ -87,7 +86,7 @@ class TGDownloader():
 
             last_message_id = file_list[-1].id
 
-        return file_list
+        return sorted(file_list, key=lambda file: file.id)
 
     def __call__(self, *args: Any, **kwds: Any) -> Telegram:
         return self.tg
