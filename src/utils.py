@@ -20,3 +20,14 @@ def print_progress_bar(file_name: str, percentage: float, name_size: int, bar_le
     sys.stdout.write(f"\033[K {file_name[:name_size] + ' ' * (name_size - len(file_name))}\t")
     print(f"[{colored_bar}] {f'{percentage:.2f}'}%")
     sys.stdout.flush()
+
+
+def get_file_list_from_file(chat_name: str) -> list[str]:
+    with open(chat_name, "r") as f:
+        return [line.strip() for line in f.readlines()]
+
+
+def store_files_file_in_file(chat_name: str, file_list: list[str]):
+    with open(chat_name, "w") as f:
+        for file in file_list:
+            f.write(file + "\n")

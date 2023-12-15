@@ -28,7 +28,8 @@ class TestFileMessage(TestCase):
     def test_downloading_file_returns_false_when_downloading_is_not_completed(self):
         # Arrange
         telegram = self.get_telegram_mock()
-        file = FileMessage(file_name='test_file', file_id=1, file_size=100, telegram=telegram)
+        file = FileMessage(file_name='test_file', file_id=1,
+                           file_size=100, telegram=telegram, id=1)
 
         # Act
         result, percentage, path = file.download()
@@ -41,7 +42,8 @@ class TestFileMessage(TestCase):
     def test_downloading_file_returns_true_when_downloading_is_completed(self):
         # Arrange
         telegram = self.get_telegram_mock(True, 100)
-        file = FileMessage(file_name='test_file', file_id=1, file_size=100, telegram=telegram)
+        file = FileMessage(file_name='test_file', file_id=1,
+                           file_size=100, telegram=telegram, id=1)
 
         # Act
         result, percentage, path = file.download()
