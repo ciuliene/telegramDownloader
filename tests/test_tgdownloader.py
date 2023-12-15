@@ -30,7 +30,12 @@ class Mock_History():
     def __init__(self, len: int = 0, msg_type: str = 'video') -> None:
         messages = []
         for i in range(len):
-            messages.append({'id': str(i), 'content': {msg_type: {'file_name': f'video_{i}.mp4', msg_type:{'id':i, 'size':i}  }}})
+            if msg_type is not 'web_page':
+                messages.append({'id': str(i), 'content': {msg_type: {
+                                'file_name': f'video_{i}.mp4', msg_type: {'id': i, 'size': i}}}})
+            else:
+                messages.append({'id': str(i), 'content': {msg_type: {'document': {
+                                'file_name': f'video_{i}.mp4', 'document': {'id': i, 'size': i}}}}})
         self.update = {'messages': messages}
         pass
 
@@ -145,6 +150,21 @@ class Test_TGDownloader(TestCase):
         tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
         mock_history.side_effect = [Mock_History(
             10), Mock_History(5), Mock_History()]
+        chat = Mock_Chat(0)
+
+        # Act
+        result = tgd.get_files_from_chat(chat)
+
+        # Assert
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 15)
+
+    @patch.object(Telegram, 'get_chat_history')
+    def test_getting_files_returns_list_when_chat_has_multiple_attached_files(self, mock_history):
+        # Arrange
+        tgd = TGDownloader("API_ID", "API_HASH", "DB_ENC_KEY", "PHONE_NUMBER")
+        mock_history.side_effect = [Mock_History(
+            10, 'web_page'), Mock_History(5, 'web_page'), Mock_History()]
         chat = Mock_Chat(0)
 
         # Act

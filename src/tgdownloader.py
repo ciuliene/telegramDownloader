@@ -55,16 +55,27 @@ class TGDownloader():
         video_list = []
 
         for message in messages:
-            field = 'video' if 'video' in message['content'] else 'document' if 'document' in message['content'] else None
+            field = 'video' if 'video' in message['content'] else 'document' if 'document' in message[
+                'content'] else 'web_page' if 'web_page' in message['content'] else None
 
             if not field:
                 continue
 
             video = message['content'][field]
+
+            if field == 'web_page':
+                file_name = video['document']['file_name']
+                file_id = video['document']['document']['id']
+                file_size = video['document']['document']['size']
+            else:
+                file_name = video['file_name']
+                file_id = video[field]['id']
+                file_size = video[field]['size']
+
             video_list.append(FileMessage(
-                file_name=video['file_name'], 
-                file_id=video[field]['id'], 
-                file_size=video[field]['size'], 
+                file_name=file_name,
+                file_id=file_id,
+                file_size=file_size,
                 telegram=self.tg,
                 id=message['id']))
 
