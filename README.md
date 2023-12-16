@@ -58,6 +58,41 @@ NOTE: the file is created in the same folder as the application.
 
 If the file named <chat>.txt exists, the application will download them one by one. A progress bar will be shown for each file.
 
+## Usage with Docker
+
+If you have any problems using the application, you can use it with [Docker](https://www.docker.com/products/docker-desktop/). Make sure it is installed.
+
+### Build
+
+Build image using this command:
+
+```sh
+docker build -t telegram_downloader:latest .
+```
+
+### Create
+
+Create container using this command:
+
+```sh
+docker create --name telegram_downloader -it telegram_downloader:latest
+```
+
+NOTE: this command create a 'non-daemon' container. This means that when you start the container, it runs on the local terminal where you executed the command.
+
+### Start
+
+Start container using this command:
+
+```sh
+docker start -i telegram_downloader
+```
+
+NOTES:
+
+- `Interactive` mode (`-i`) is mandatory in order to enter the verification code (required at first run only) and select the chats.
+- To edit the files with the list or to get downloaded videos, you can use the Docker Desktop (it's easier than attaching to the terminal where the container is)
+
 ## Disclaimer
 
 This application is for educational purposes only. I am not responsible for any misuse of this application. Damages caused by this application are not my responsibility.

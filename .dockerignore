@@ -1,0 +1,10 @@
+__pycache__
+tests/
+.github
+Dockerfile
+LICENSE
+package.json
+README.md
+.git
+.gitignore
+venv
