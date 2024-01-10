@@ -64,6 +64,8 @@ class TGDownloader():
             video = message['content'][field]
 
             if field == 'web_page':
+                if not 'document' in video:
+                    continue
                 file_name = video['document']['file_name']
                 file_id = video['document']['document']['id']
                 file_size = video['document']['document']['size']

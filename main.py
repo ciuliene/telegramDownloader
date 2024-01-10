@@ -41,7 +41,7 @@ def run():
 
         file_list: list = None
 
-        chat_name = f'{selected_chat}.txt'
+        chat_name = f'{selected_chat}.txt'.replace('/', '')
 
         files_from_chat = tgd.get_files_from_chat(chat)
 
