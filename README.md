@@ -6,7 +6,11 @@ A python application to download video files from Telegram channel
 
 ## Requirements
 
-Before starting, make sure you have an active `Telegram` account and that you have installed `python` (in my case I used version _3.11.4_).
+Before starting, make sure you have:
+
+- an active `Telegram` account
+- `python@3`
+- `openssl@1.1`
 
 To use Telegram APIs you need to register an application from [here](https://my.telegram.org/). The data from the `App configuration` section will be used in the next step.
 

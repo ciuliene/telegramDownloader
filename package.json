@@ -7,7 +7,6 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "coverage run --omit 'tests/*,*__init__.py' -m unittest discover -s ./tests -v && coverage lcov -o lcov.info && coverage report",
     "docker:build": "docker build -t telegram_downloader:latest .",
     "docker:create": "docker create --name telegram_downloader -it telegram_downloader:latest",
     "docker:start": "docker start -i telegram_downloader"
