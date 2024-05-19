@@ -68,6 +68,8 @@ If you have any problems using the application, you can use it with [Docker](htt
 
 ### Build
 
+NOTE: Before creating the container, you need to create the .env file, as described above.
+
 Build image using this command:
 
 ```sh

@@ -3,8 +3,12 @@ WORKDIR /app
 
 COPY requirements.txt .
 
+RUN pip install --upgrade pip 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY main.py .
+COPY src/*.py ./src/
+COPY src/models/*.py ./src/models/
+COPY .env .
 
 CMD ["python", "main.py"]

@@ -3,6 +3,4 @@ __pycache__/
 .coverage
 lcov.info
 .env
-
 files/
-renaming.sh
