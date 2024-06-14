@@ -66,7 +66,7 @@ def run():
             raise e
 
         to_download = sorted([file for file in files_from_chat if file.file_name in file_list],
-                             key=lambda x: file_list.index(x.file_name))
+                            key=lambda x: file_list.index(x.file_name))
 
         for file in to_download:
             while not file.is_downloaded:
