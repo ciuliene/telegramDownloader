@@ -1,18 +1,19 @@
-from src.envtool import EnvTool
 from src.tgdownloader import TGDownloader
 from src.utils import *
 from src.menu import Menu
+from dotenv import load_dotenv
+import os
 import sys
 
-def create_tgd() -> TGDownloader:
-    env = EnvTool()
-    env.set_env_vars_from_file('.env')
+load_dotenv()
 
-    api_id = env.get_env_var('API_ID')
-    api_hash = env.get_env_var('API_HASH')
-    database_encryption_key = env.get_env_var('DATABASE_ENCRYPTION_KEY')
-    phone = env.get_env_var('PHONE')
-    files_directory = env.get_env_var('FILES_DIRECTORY') or f"./files/{phone}"
+def create_tgd() -> TGDownloader:
+
+    api_id = os.getenv('API_ID') or ''
+    api_hash = os.getenv('API_HASH') or ''
+    database_encryption_key = os.getenv('DATABASE_ENCRYPTION_KEY') or ''
+    phone = os.getenv('PHONE') or ''
+    files_directory = os.getenv('FILES_DIRECTORY') or f"./files/{phone}"
 
     tgd = TGDownloader(
         api_id=api_id, 
@@ -39,7 +40,7 @@ def run():
 
         chat = [chat for chat in chat_list if chat.title == selected_chat][0]
 
-        file_list: list = None
+        file_list: list | None = None
 
         chat_name = f'{selected_chat}.txt'.replace('/', '')
 
