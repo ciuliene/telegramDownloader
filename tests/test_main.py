@@ -32,18 +32,17 @@ class Mock_FileMessage:
         if self.downloaded_size == self.file_size:
             self.is_downloaded = True
             self.file_path = "file_path"
-        return self.is_downloaded, self.downloaded_size / self.file_size * 100, self.file_path
+        return self.is_downloaded, self.downloaded_size / self.file_size * 100, self.file_path # type: ignore
 
 
 file_message_list = [Mock_FileMessage(
     "file_0"), Mock_FileMessage("file_1"), Mock_FileMessage("file_2"), Mock_FileMessage("file_3"), Mock_FileMessage("file_4")]
 
-with patch('src.envtool.EnvTool'):
-        with patch('src.utils.print_progress_bar'):
-            with patch('src.tgdownloader.TGDownloader') as mock_tgd:
-                mock_tgd.return_value.get_chats.return_value = [Mock_Chat("chat_0"), Mock_Chat("chat_1")]
-                mock_tgd.return_value.get_files_from_chat.return_value = file_message_list
-                from main import run
+with patch('src.utils.print_progress_bar'):
+    with patch('src.tgdownloader.TGDownloader') as mock_tgd:
+        mock_tgd.return_value.get_chats.return_value = [Mock_Chat("chat_0"), Mock_Chat("chat_1")]
+        mock_tgd.return_value.get_files_from_chat.return_value = file_message_list
+        from main import run
 
 
 class TestMain(TestCase):
